@@ -1,0 +1,103 @@
+<div class="container text-center my-2">
+  <h1>Encuentra el inmueble perfecto...</h1>
+</div>
+
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-md-4">
+      <form [formGroup]="filtroForm" (ngSubmit)="buscar()">
+
+        <div class="mb-3">
+          <label for="pais" class="form-label">Pais</label>
+          <select id="pais" class="form-select" formControlName="pais">
+            <option value="" disabled>- Seleccione un pais -</option>
+            @for (p of paises; track $index) {
+            <option [value]="p">{{p}}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="ciudad" class="form-label">Ciudad</label>
+          <input id="ciudad" class="form-control" formControlName="ciudad" placeholder="Nombre de la ciudad">
+        </div>
+
+        <div class="mb-4">
+          <label for="tipoContratacion" class="form-label">Tipo de contratacion</label>
+          <select id="tipoContratacion" class="form-select" formControlName="tipoContratacion">
+            <option value="" disabled>- Seleccione un tipo -</option>
+            <option value="Venta">Venta</option>
+            <option value="Alquiler">Alquiler</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <div class="input-group">
+            <span class="input-group-text">Metros² mín. - máx.</span>
+            <input type="number" min="0" max="{{mMax}}" step="5" aria-label="Metros² mínimos" class="form-control"
+              placeholder="0" formControlName="metrosMin">
+            <input type="number" min="0" max="{{mMax}}" step="5" aria-label="Metros² máximos" class="form-control"
+              placeholder="0" formControlName="metrosMax">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <div class="input-group">
+            <span class="input-group-text">Precio mín. - máx.</span>
+            <input type="number" min="0" max="{{cMax}}" aria-label="Precio mínimo" class="form-control" placeholder="0"
+              formControlName="precioMin">
+            <input type="number" min="0" max="{{cMax}}" step="50" aria-label="Precio máximo" class="form-control"
+              placeholder="0" formControlName="precioMax">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <div class="input-group">
+            <span class="input-group-text">Cant. ambientes mín. - máx.</span>
+            <input type="number" min="1" max="{{aMax}}" aria-label="Cantidad de ambientes mínimo" class="form-control"
+              placeholder="0" formControlName="cantAmbientesMin">
+            <input type="number" min="1" max="{{aMax}}" aria-label="Cantidad de ambientes máximo" class="form-control"
+              placeholder="0" formControlName="cantAmbientesMax">
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+          @if (filtrado) {
+          <a class="btn btn-secondary" (click)="borrarFiltros()">Quitar filtros</a>
+          <p class="text-secondary m-0"><small>Inmuebles encontrados: {{inmuebles.length}}</small></p>
+          }
+          @else {
+          <p class="text-secondary m-0"><small>Inmuebles totales: {{inmuebles.length}}</small></p>
+          }
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-7 mt-3 col-inmuebles">
+      @for (i of inmuebles; track i.id) {
+      <div class="card mb-3 p-0">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img [src]="i.imgUrl" class="img-fluid rounded-start" alt="Imagen inmueble" style="height: 100%;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <p class="card-text m-0">Ubicación: {{i.barrio}}, {{i.ciudad}} - {{i.pais}}</p>
+              <p class="card-text m-0"><small class="text-body-secondary">Mts. cuadrados: {{i.metrosCuadrados}} - Cant.
+                  ambientes: {{i.cantAmbientes}}</small></p>
+              <p class="card-text m-0"><small class="text-body-secondary">Contratación: {{i.tipoDeContratacion}} |
+                  Costo: {{i.costo}}€</small></p>
+              <p class="card-text d-flex"><small class="text-body-secondary">Publicada el: {{i.fechaModificacion}} |
+                  Estado: <span [ngStyle]="{'color' : obtenerColor(i.estado)}">{{i.estado}}</span></small></p>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a class="btn btn-sm btn-warning" (click)="masInfo(i.id)">Mas información</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

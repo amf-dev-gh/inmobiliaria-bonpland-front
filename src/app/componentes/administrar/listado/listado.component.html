@@ -1,0 +1,46 @@
+<table class="table table-hover">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">#</th>
+      <th scope="col">ID</th>
+      <th scope="col">PAIS</th>
+      <th scope="col">CIUDAD</th>
+      <th scope="col">BARRIO</th>
+      <th scope="col">MTS CUAD.</th>
+      <th scope="col">CANT. AMB.</th>
+      <th scope="col">COSTO</th>
+      <th scope="col">ESTADO</th>
+      <th scope="col">CONTRATACION</th>
+      <th scope="col">CREADO</th>
+      <th scope="col">ULT .MODIF</th>
+      <th scope="col">IMAGEN</th>
+      <th scope="col">ACCIÓN</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (i of inmuebles; track $index) {
+    <tr class="text-center">
+      <th>{{$index+1}}</th>
+      <td>{{i.id}}</td>
+      <td class="text-start">{{i.pais}}</td>
+      <td class="text-start">{{i.ciudad}}</td>
+      <td class="text-start">{{i.barrio}}</td>
+      <td>{{i.metrosCuadrados}}</td>
+      <td>{{i.cantAmbientes}}</td>
+      <td class="text-end">{{i.costo}} €</td>
+      <td>{{i.estado}}</td>
+      <td>{{i.tipoDeContratacion}}</td>
+      <td>{{i.fechaCreacion}}</td>
+      <td>{{i.fechaModificacion}}</td>
+      <td><img [src]="i.imgUrl" alt="Imagen inmueble" class="img-inmueble"></td>
+      <td>
+        <a class="btn btn-sm mx-1 btn-warning" [routerLink]="['/admin/editar', i.id]">Editar</a>
+        <a class="btn btn-sm mx-1 btn-danger" (click)="eliminarInmueble(i.id)">Eliminar</a>
+      </td>
+    </tr>
+    }
+    <tr class="text-center">
+      <td>Total: {{inmuebles.length}}</td>
+    </tr>
+  </tbody>
+</table>

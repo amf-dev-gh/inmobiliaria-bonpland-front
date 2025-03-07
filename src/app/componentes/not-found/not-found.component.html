@@ -1,0 +1,10 @@
+<div class="container text-center my-2">
+  <h1>{{error}}</h1>
+  <h3 class="my-4">{{mensaje}}</h3>
+  @if (acceder) {
+    <a routerLink="/login" class="btn btn-warning my-3">Acceder</a>
+  }
+  @if (inicio) {
+    <a routerLink="/inicio" class="btn btn-warning my-3">Volver al inicio</a>
+  }
+</div>

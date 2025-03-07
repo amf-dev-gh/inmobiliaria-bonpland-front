@@ -1,0 +1,72 @@
+<div class="container my-2">
+  <h1 class="text-center">Detalle del inmueble</h1>
+
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img [src]="inmueble.imgUrl" class="img-fluid rounded-start img-inmueble" alt="Imagen del inmueble">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Ubicación: {{inmueble.pais}} - {{inmueble.ciudad}}, {{inmueble.barrio}}</h5>
+          <p class="card-text"><strong>Superficie:</strong> {{inmueble.metrosCuadrados}} m<sup>2</sup></p>
+          <p class="card-text"><strong>Cantidad de ambientes: </strong>{{inmueble.cantAmbientes}}</p>
+          <p class="card-text">Inmueble en <strong>{{inmueble.tipoDeContratacion}}</strong></p>
+          <p class="card-text"><strong>Costo: </strong>{{inmueble.costo}} €</p>
+          <p class="card-text"><strong>Estado: </strong><span
+              [ngStyle]="{'color' : obtenerColor(inmueble.estado)}">{{inmueble.estado}}</span></p>
+          <p class="card-text"><strong>Información adicional: </strong>{{inmueble.infoAdicional }}.</p>
+          <p class="card-text">Publicado el {{inmueble.fechaCreacion}}</p>
+          @if (inmueble.estado === "Disponible") {
+          <a class="btn btn-warning mb-2 me-2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+            (click)="reservaConsulta('Reserva')">Reservar</a>
+          }
+          <a class="btn btn-secondary mb-2 me-2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+            (click)="reservaConsulta('Consulta')">Consultar</a>
+          <p class="card-text"><small class="text-body-secondary">Última modificación:
+              {{inmueble.fechaModificacion}}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="form" (ngSubmit)="enviar()">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{tituloModal}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="limpiarFormulario()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label for="nombreCompleto" class="form-label">Nombre completo</label>
+            <input type="text" id="nombreCompleto" class="form-control" formControlName="nombreCompleto">
+          </div>
+          <div class="mb-2">
+            <label for="dni" class="form-label">DNI</label>
+            <input type="text" id="dni" class="form-control" formControlName="dni">
+          </div>
+          <div class="mb-2">
+            <label for="telefono" class="form-label">Teléfono de contacto</label>
+            <input type="text" id="telefono" class="form-control" formControlName="telefono">
+          </div>
+          <div class="mb-2">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="limpiarFormulario()">Cancelar</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+            [disabled]="form.invalid">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
