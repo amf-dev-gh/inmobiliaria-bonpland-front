@@ -38,7 +38,7 @@
     <div class="modal-content">
       <form [formGroup]="form" (ngSubmit)="enviar()">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{tituloModal}}</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{tituloModal}} inmueble: <small>{{inmueble.id}}</small></h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="limpiarFormulario()"></button>
         </div>
@@ -59,6 +59,7 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" class="form-control" formControlName="email">
           </div>
+          <p class="text-danger mt-1 mb-1" [hidden]="!form.invalid"><small>**Todos los campos son obligatorios.</small></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"

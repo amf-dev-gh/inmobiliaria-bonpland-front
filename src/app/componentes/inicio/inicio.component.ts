@@ -14,7 +14,7 @@ export class InicioComponent implements OnInit {
 
   inmuebles: Inmueble[] = [];
 
-  constructor(private inmuebleService: InmuebleService, private router:Router) { }
+  constructor(private inmuebleService: InmuebleService, private router: Router) { }
 
   ngOnInit(): void {
     this.listarInmueblesRecientes();
@@ -35,7 +35,7 @@ export class InicioComponent implements OnInit {
     ).slice(-4)
   }
 
-  masInfo(id:string){
+  masInfo(id: string | null) {
     this.router.navigate([`/detalle/${id}`])
   }
 

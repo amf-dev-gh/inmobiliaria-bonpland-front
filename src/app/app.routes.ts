@@ -21,7 +21,8 @@ export const routes: Routes = [
   { path: 'contacto', component: ContactoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'buscar', component: FiltrarComponent },
-  { path: 'admin', component: AdministrarComponent,
+  {
+    path: 'admin', component: AdministrarComponent,
     canActivate: [adminGuard],
     canActivateChild: [adminChildGuard],
     children: [

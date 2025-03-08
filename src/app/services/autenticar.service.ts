@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Credenciales } from '../interfaces/credenciales';
-import { Usuario } from '../interfaces/usuario';
 import { catchError, map, Observable, of } from 'rxjs';
+import { HttpLoginResponse, LoginUsuario } from '../interfaces/login.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,63 +10,52 @@ import { catchError, map, Observable, of } from 'rxjs';
 export class AutenticarService {
 
   private apiUrl: string = "http://localhost:8080/api/bonpland/usuarios";
-  private usuarioAdmin: Usuario = {
-    id: 1,
-    nombre: 'Administrador 1',
-    username: 'admin',
-    password: 'admin',
-    rol: 'ADMIN',
-    email: 'admin@mail.com',
-    activo: true
-  }
 
-  constructor(private http: HttpClient) { }
-
-  logOut() {
-    window.sessionStorage.removeItem('USUARIO_ROL');
-    window.sessionStorage.removeItem('USUARIO_NOMBRE');
-    window.sessionStorage.removeItem('token');
-  }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getRol(): string {
     return sessionStorage.getItem('USUARIO_ROL') || '';
   }
 
-  getNombre(): string {
-    return sessionStorage.getItem('USUARIO_NOMBRE') || '';
+  getToken(): string {
+    return sessionStorage.getItem('USUARIO_TOKEN') || '';
   }
 
-  setRol(u: Usuario) {
-    window.sessionStorage.setItem('USUARIO_ROL', u.rol);
-    window.sessionStorage.setItem('USUARIO_NOMBRE', u.username);
-    window.sessionStorage.setItem('token', u.username);
+  setSession(response: HttpLoginResponse) {
+    window.sessionStorage.setItem('USUARIO_ROL', response.rol);
+    window.sessionStorage.setItem('USUARIO_TOKEN', response.token);
+    window.sessionStorage.setItem('USUARIO_TOKEN_EXPIRACION', response.expiracion.toString());
+    window.sessionStorage.setItem('USUARIO_TOKEN_INGRESO', (new Date().getTime().toString()));
   }
 
-  //AUTENTICARSE DESDE LA APP BASICA, SIN SEGURIDAD
-  autenticarse(credenciales: Credenciales):boolean {
-    if (credenciales.username === this.usuarioAdmin.username && credenciales.password === this.usuarioAdmin.password) {
-      this.setRol(this.usuarioAdmin);
-      window.sessionStorage.setItem('USUARIO_NOMBRE', 'R8Sw&-%fnk:@6!$AD[jR-6jAWj');
-      return true;
-    }
-    return false;
+  tokenExpirado(): boolean {
+    const horaIngreso = window.sessionStorage.getItem('USUARIO_TOKEN_INGRESO');
+    const tiempoExpiracion = window.sessionStorage.getItem('USUARIO_TOKEN_EXPIRACION');
+    const horaActual = new Date().getTime().toString();
+    const diferencia = (Number(horaActual) - Number(horaIngreso))
+    return diferencia >= Number(tiempoExpiracion);
   }
 
   //AUTENTICARSE CON LA BBDD
-  // autenticarse(credenciales: Credenciales): Observable<boolean> {
-  //   return this.http.post<Usuario>(`${this.apiUrl}/autenticar`, credenciales).pipe(
-  //     map(u => {
-  //       this.setRol(u);
-  //       return true;
-  //     }),
-  //     catchError(error => {
-  //       console.error("Usuario o contraseña inválidos", error);
-  //       return of(false);
-  //     })
-  //   );
-  // }
+  autenticarse(loginUsuario: LoginUsuario): Observable<boolean> {
+    console.log(loginUsuario)
+    return this.http.post<HttpLoginResponse>(`${this.apiUrl}/login`, loginUsuario).pipe(
+      map(response => {
+        this.setSession(response);
+        return true;
+      }),
+      catchError(error => {
+        console.error("Usuario o contraseña inválidos", error);
+        return of(false);
+      })
+    );
+  }
 
-  //PENDIENTE
+  logout() {
+    sessionStorage.clear();
+  }
+
+  //Modo de ejemplo
   bloquearUsuario(value: string) {
     console.log(`Usuario ${value} bloqueado.`)
   }

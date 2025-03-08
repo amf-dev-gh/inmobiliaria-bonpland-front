@@ -75,7 +75,7 @@ export class DetalleComponent implements OnInit {
     }
   }
 
-  limpiarFormulario(){
+  limpiarFormulario() {
     this.form.patchValue({
       nombreCompleto: '',
       telefono: '',

@@ -1,7 +1,6 @@
 <table class="table table-hover">
   <thead>
     <tr class="text-center">
-      <th scope="col">#</th>
       <th scope="col">ID</th>
       <th scope="col">PAIS</th>
       <th scope="col">CIUDAD</th>
@@ -20,7 +19,6 @@
   <tbody>
     @for (i of inmuebles; track $index) {
     <tr class="text-center">
-      <th>{{$index+1}}</th>
       <td>{{i.id}}</td>
       <td class="text-start">{{i.pais}}</td>
       <td class="text-start">{{i.ciudad}}</td>
@@ -40,7 +38,7 @@
     </tr>
     }
     <tr class="text-center">
-      <td>Total: {{inmuebles.length}}</td>
+      <th>Cantidad total: {{inmuebles.length}}</th>
     </tr>
   </tbody>
 </table>

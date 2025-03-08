@@ -1,6 +1,6 @@
 export interface Inmueble {
 
-  id: string,
+  id: string | null,
   pais: string,
   ciudad: string,
   barrio: string,

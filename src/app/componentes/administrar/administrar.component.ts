@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { InmuebleService } from '../../services/inmueble.service';
-import { Inmueble } from '../../interfaces/inmueble.interface';
+import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({

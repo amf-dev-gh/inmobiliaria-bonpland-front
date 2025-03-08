@@ -1,5 +1,5 @@
 <div class="container text-center my-2">
-  <h1>Encuentra el inmueble perfecto...</h1>
+  <h1>Encuentra tu inmueble perfecto...</h1>
 </div>
 
 <div class="container">
@@ -10,7 +10,7 @@
         <div class="mb-3">
           <label for="pais" class="form-label">Pais</label>
           <select id="pais" class="form-select" formControlName="pais">
-            <option value="" disabled>- Seleccione un pais -</option>
+            <option value="">-- Seleccione un pais --</option>
             @for (p of paises; track $index) {
             <option [value]="p">{{p}}</option>
             }
@@ -18,8 +18,13 @@
         </div>
 
         <div class="mb-3">
-          <label for="ciudad" class="form-label">Ciudad</label>
-          <input id="ciudad" class="form-control" formControlName="ciudad" placeholder="Nombre de la ciudad">
+          <label for="ciudad" class="form-label">Ciudad:</label>
+          <select id="ciudad" formControlName="ciudad" class="form-select">
+            <option value="">-- Seleccione una ciudad --</option>
+            @for (c of ciudades; track $index) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
         </div>
 
         <div class="mb-4">

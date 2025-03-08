@@ -9,7 +9,3 @@ thead {
   width: 30px;
   height: 30px;
 }
-
-.img-inmueble:hover {
-  transform: scale(3);
-}

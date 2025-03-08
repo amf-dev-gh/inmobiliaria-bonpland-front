@@ -9,21 +9,21 @@ import { AutenticarService } from './services/autenticar.service';
   styleUrl: './app.component.css'
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
   fecha: Date = new Date();
   anio: number = this.fecha.getFullYear();
-  autorizado:boolean = false;
+  autorizado: boolean = false;
 
-  constructor(private autService:AutenticarService, private router:Router){}
+  constructor(private autService: AutenticarService, private router: Router) { }
 
   ngOnInit(): void {
     this.autorizado = this.autService.getRol() === "ADMIN";
   }
 
-  salir(){
-    this.autService.logOut();
-    this.router.navigate(["/"]);
+  salir() {
+    this.autService.logout();
+    this.router.navigate(["/login"]).then(() => window.location.reload());
   }
 
 }

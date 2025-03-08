@@ -2,7 +2,7 @@
 
 <h1>Inmobiliaria Bonpland</h1>
 
-<h3><em>Diseñado en IDE Visual studio code utilizando como framework Angular, conectandose a una API rest creada con SpringBoot.</em></h3>
+<h3><em>Diseñado en IDE Visual studio code utilizando como framework Angular, conectandose a una API REST creada con SpringBoot. Que incluye validacion con JWT para el apartado de administrador</em></h3>
 
 <h3>La web de Inmobiliaria Bonpland fue creada a partir de la #idea5 de proyecto ofrecida por ID for Ideas, en el cual de debera crear un sitio Sitio para evaluar opciones de compra venta al quiler de inmuebles.</h3>
 
@@ -17,11 +17,11 @@ específico.</em></h3>
 
 <p># Debe contener una sección de “quienes somos” y “nuestra trayectoria”.</p>
 
-<p># Se necesita una sección de contacto para poder ver los datos de contacto del negocio.</p>
+<p># Se necesita una sección de "contacto" para poder ver los datos de contacto del negocio.</p>
 
-<p># Ver un listado del total de los inml total de los inmuebles con los filtros uebles con los filtros necesarios para poder ver necesarios para poder ver especificando: cantidad de ambientes, país, ciudad, metros cuadrados mciudad, metros cuadrados mínimos y máximos, rango de precio, y tipo de contratación, (alquiler o compra).</p>
+<p># Ver un listado del total de los inml total de los inmuebles con los filtros necesarios para poder ver especificando: cantidad de ambientes, país, ciudad, metros cuadrados mínimos y máximos, rango de precio, y tipo de contratación, (alquiler o compra).</p>
 
-<p># Se debe poder ac ceder al detalle de cada inmueble y poder acceder a un link para
+<p># Se debe poder acceder al detalle de cada inmueble y poder acceder a un link para
 contactar a la inmobiliaria enviando el código de referencia de ese inmueble en particular.</p>
 
 <p># La inmobiliaria debe contar con un panel privado para poder gestionar el listado de inmuebles para hacer la carga, edición y eliminación de cada uno.</p>

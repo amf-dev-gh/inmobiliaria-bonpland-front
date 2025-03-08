@@ -3,15 +3,14 @@ import { Inmueble } from '../../interfaces/inmueble.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InmuebleService } from '../../services/inmueble.service';
 import { CommonModule } from '@angular/common';
-import { UbicacionService } from '../../services/ubicacion.service';
-import { catchError, of } from 'rxjs';
+import { catchError } from 'rxjs';
 import { Router } from '@angular/router';
 import { UtilidadesService } from '../../services/utilidades.service';
 
 @Component({
   selector: 'app-filtrar',
   imports: [ReactiveFormsModule, CommonModule],
-  providers: [InmuebleService, UbicacionService],
+  providers: [],
   templateUrl: './filtrar.component.html',
   styleUrl: './filtrar.component.css'
 })
@@ -20,6 +19,7 @@ export class FiltrarComponent implements OnInit {
   inmuebles: Inmueble[] = [];
   filtroForm: FormGroup;
   paises: string[] = [];
+  ciudades: string[] = [];
   sinResultado: boolean = false;
   filtrado: boolean = false
 
@@ -31,7 +31,6 @@ export class FiltrarComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private inmuebleService: InmuebleService,
-    private ubicacionService: UbicacionService,
     private router: Router,
     private utilService: UtilidadesService
   ) {
@@ -51,13 +50,17 @@ export class FiltrarComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarInmuebles();
-    this.listarPaises();
+    this.filtroForm.get('pais')?.valueChanges.subscribe((p) => {
+      this.actualizarCiudades(p);
+    });
   }
 
   buscar(): void {
     this.inmuebleService.filtrarInmuebles(this.filtroForm).subscribe(
       {
         next: imbs => {
+          //Si quisiera mostrar la lista filtrada sin los que estan vendidos o alquilados
+          //this.inmuebles = imbs.filter(i => i.estado === "Disponible" || i.estado === "Reservado");
           this.inmuebles = imbs.filter(i => i.estado === "Disponible" || i.estado === "Reservado");
           this.sinResultado = false;
         },
@@ -87,16 +90,9 @@ export class FiltrarComponent implements OnInit {
     ).subscribe(data => {
       this.inmuebles = data;
       this.asignarValoresMinMax();
+      this.paises = [...new Set(this.inmuebles.map(i => i.pais))];
+      this.ciudades = [...new Set(this.inmuebles.map(i => i.ciudad))];
     });
-  }
-
-  listarPaises(): void {
-    this.ubicacionService.obtenerPaises().pipe(
-      catchError(error => {
-        console.error("Error al listar países:", error);
-        return this.paises = [];
-      })
-    ).subscribe(paises => this.paises = paises);
   }
 
   asignarValoresMinMax(): void {
@@ -119,11 +115,20 @@ export class FiltrarComponent implements OnInit {
     });
   }
 
-  masInfo(id: string) {
+  masInfo(id: string | null) {
     this.router.navigate([`/detalle/${id}`])
   }
 
   obtenerColor(estado: string) {
     return this.utilService.obtenerColorTexto(estado);
+  }
+
+  actualizarCiudades(paisSeleccionado: string) {
+    this.ciudades = [...new Set(this.inmuebles
+      .filter(inmueble => inmueble.pais === paisSeleccionado)
+      .map(inmueble => inmueble.ciudad))];
+
+    // Reinicia la selección de ciudad cuando se cambia de país
+    this.filtroForm.get('ciudad')?.setValue('');
   }
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AutenticarService } from '../../services/autenticar.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Credenciales } from '../../interfaces/credenciales';
+import { LoginUsuario } from '../../interfaces/login.interface';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +10,7 @@ import { Credenciales } from '../../interfaces/credenciales';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
+
 export class LoginComponent {
 
   private MAXIMO_INTENTOS: number = 3;
@@ -25,44 +26,27 @@ export class LoginComponent {
   }
 
   login() {
-    const credenciales: Credenciales = {
+    const loginUsuario: LoginUsuario = {
       username: this.formLogin.get('username')?.value,
       password: this.formLogin.get('password')?.value,
     }
 
-    const autenticado: boolean = this.autService.autenticarse(credenciales);
-    if (autenticado) {
-      this.router.navigate(['/admin']).then(() => window.location.reload());
-    }
-    else {
-      console.log("Fallo en la autenticación");
-      this.intentos++;
-      if (this.intentos >= this.MAXIMO_INTENTOS) {
-        this.autService.bloquearUsuario(this.formLogin.get('username')?.value);
-        alert("Ha llegado al maximo de intentos fallidos. Usuario bloqueado.");
-        this.router.navigate(['/']);
-      }
-      this.infoIntentos = 'Usuario o contraseña incorrectos. Le quedan ' + (this.MAXIMO_INTENTOS - this.intentos) + ' intentos.';
-    }
-  }
-
     // LINEA PARA AUTENTICARSE DESDE LA BBDD
-    // this.autService.autenticarse(credenciales).subscribe(autenticado => {
-    //   if (autenticado) {
-    //     this.router.navigate(['/admin']).then(() => {
-    //       window.location.reload();
-    //     });
-    //   } else {
-    //     console.log("Fallo en la autenticación");
-    //     this.intentos++;
-    //   if (this.intentos >= this.MAXIMO_INTENTOS) {
-    //     this.autService.bloquearUsuario(this.formLogin.get('username')?.value);
-    //     alert("Ha llegado al maximo de intentos fallidos. Usuario bloqueado.");
-    //     this.router.navigate(['/']);
-    //   }
-    //   this.infoIntentos = 'Usuario o contraseña incorrectos. Le quedan ' + (this.MAXIMO_INTENTOS - this.intentos) + ' intentos.';
-    //   }
-    // });
-    // }
-
+    this.autService.autenticarse(loginUsuario).subscribe(autenticado => {
+      if (autenticado) {
+        this.router.navigate(['/admin']).then(() => {
+          window.location.reload();
+        });
+      } else {
+        console.log("Fallo en la autenticación");
+        this.intentos++;
+        if (this.intentos >= this.MAXIMO_INTENTOS) {
+          this.autService.bloquearUsuario(this.formLogin.get('username')?.value);
+          alert("Ha llegado al maximo de intentos fallidos. Usuario bloqueado.");
+          this.router.navigate(['/']);
+        }
+        this.infoIntentos = 'Usuario o contraseña incorrectos. Le quedan ' + (this.MAXIMO_INTENTOS - this.intentos) + ' intentos.';
+      }
+    });
+  }
 }

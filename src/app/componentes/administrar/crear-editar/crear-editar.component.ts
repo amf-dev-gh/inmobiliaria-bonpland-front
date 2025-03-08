@@ -12,8 +12,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class CrearEditarComponent implements OnInit {
 
-  nuevo:boolean = false
-  error:boolean = false;
+  nuevo: boolean = false
+  error: boolean = false;
   subtitulo: string = ""
   titulo: string = "";
   inmueble: Inmueble = {
@@ -35,15 +35,16 @@ export class CrearEditarComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.ruta.snapshot.paramMap.get('id');
-    if(id != null){
+    if (id != null) {
       this.obtenerInmueble();
-    }else{
+    } else {
       this.crearInmueble();
     }
   }
 
   constructor(private inmuebleService: InmuebleService, private ruta: ActivatedRoute, private fb: FormBuilder, private router: Router) {
     this.formulario = this.fb.group({
+      id: [''],
       pais: [''],
       ciudad: [''],
       barrio: [''],
@@ -68,6 +69,7 @@ export class CrearEditarComponent implements OnInit {
           this.inmueble = i;
           this.titulo = `Editando inmueble con ID: ${this.inmueble.id} - Creado el ${this.inmueble.fechaCreacion}`;
           this.formulario.patchValue({
+            id: this.inmueble.id,
             pais: this.inmueble.pais,
             ciudad: this.inmueble.ciudad,
             barrio: this.inmueble.barrio,
@@ -94,14 +96,14 @@ export class CrearEditarComponent implements OnInit {
     );
   }
 
-  crearInmueble(){
+  crearInmueble() {
     this.nuevo = true;
     this.titulo = "Creando nuevo inmueble"
   }
 
   guardarCambios() {
     const inmueble: Inmueble = {
-      id: this.inmueble?.id,
+      id: this.formulario.get('id')?.value,
       pais: this.formulario.get('pais')?.value,
       ciudad: this.formulario.get('ciudad')?.value,
       barrio: this.formulario.get('barrio')?.value,
@@ -117,15 +119,12 @@ export class CrearEditarComponent implements OnInit {
     }
     this.inmuebleService.guardar(inmueble).subscribe(
       {
-        next: d => {
-          console.log("Data", d);
-          console.log("Inmueble guardado");
+        next: () => {
           this.router.navigate(['/admin']);
         },
         error: e => {
-          console.error("Error al actualizar", e);
-          alert("Error al guardar" + e);
-          this.router.navigate(['/admin']);
+          console.log("Error al guardar" + e);
+          this.router.navigate(['/login']).then(() => window.location.reload());
         }
       }
     )

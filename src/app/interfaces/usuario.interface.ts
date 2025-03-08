@@ -3,7 +3,8 @@ export interface Usuario {
   nombre: string,
   username: string,
   password: string,
-  rol: string,
   email: string,
-  activo: boolean
+  rol: string,
+  creado: any,
+  modificado: any
 }
