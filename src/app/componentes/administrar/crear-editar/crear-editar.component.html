@@ -74,7 +74,7 @@
         </div>
       }
     </div>
-    <button type="submit" class="btn btn-primary me-3">Guardar cambios</button>
+    <button type="submit" class="btn btn-primary me-3" [disabled]="formulario.invalid">Guardar cambios</button>
     <a class="btn btn-secondary" routerLink="/admin">Volver</a>
   </form>
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Inmueble } from '../../../interfaces/inmueble.interface';
 import { InmuebleService } from '../../../services/inmueble.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-editar',
@@ -45,15 +45,15 @@ export class CrearEditarComponent implements OnInit {
   constructor(private inmuebleService: InmuebleService, private ruta: ActivatedRoute, private fb: FormBuilder, private router: Router) {
     this.formulario = this.fb.group({
       id: [''],
-      pais: [''],
-      ciudad: [''],
-      barrio: [''],
-      mtsCuadrados: [''],
-      cantAmbientes: [''],
-      tipoContratacion: [''],
-      costo: [''],
-      imgUrl: [''],
-      estado: [''],
+      pais: ['', Validators.required],
+      ciudad: ['', Validators.required],
+      barrio: ['', Validators.required],
+      mtsCuadrados:['', Validators.required],
+      cantAmbientes: ['', Validators.required],
+      tipoContratacion: ['', Validators.required],
+      costo:['', Validators.required],
+      imgUrl: ['', Validators.required],
+      estado: ['', Validators.required],
       fechaCreacion: [''],
       fechaModificacion: [''],
       infoAdicional: ['']
